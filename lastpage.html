@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Valentine</title>
 
-  <link rel="stylesheet" href="css/flower.css" />
-
   <style>
     body {
       text-align: center;
@@ -47,6 +45,41 @@
       font-size: 18px;
       color: #ff9494;
     }
+
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 600px;
+      background-color: #ffe3e1;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border: 2px solid #ff9494;
+    }
+
+    .share-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff9494;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #captureArea {
+      border: 3px solid #ff9494;
+      border-radius: 15px;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 650px;
+      background-color: #fff5e4;
+      box-shadow: 0 0 10px rgba(255, 148, 148, 0.4);
+    }
   </style>
 </head>
 
@@ -64,71 +97,103 @@
     You are my cutest Valentine forever 😘
   </div>
 
-  <!-- YOUR ORIGINAL FLOWER ANIMATION BELOW -->
+  <div id="captureArea1">
+    <h2>💖 Your Cute Date Summary 💖</h2>
 
-  <!-- <div class="flower">
-    <div class="f-wrapper">
-      <div class="flower__line"></div>
-      <div class="f">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__leaf flower__leaf--5"></div>
-        <div class="flower__leaf flower__leaf--6"></div>
-        <div class="flower__leaf flower__leaf--7"></div>
-        <div class="flower__leaf flower__leaf--8 flower__fall-down--yellow"></div>
-      </div>
+    <div id="captureArea">
+      <table>
+        <tr>
+          <th>Date</th>
+          <td id="date"></td>
+        </tr>
+
+        <tr>
+          <th>Food</th>
+          <td id="food"></td>
+        </tr>
+
+        <tr>
+          <th>Dessert</th>
+          <td id="dessert"></td>
+        </tr>
+
+        <tr>
+          <th>Activities</th>
+          <td id="activities"></td>
+        </tr>
+      </table>
     </div>
+  </div>
 
-    <div class="f-wrapper f-wrapper--2">
-      <div class="flower__line"></div>
-      <div class="f">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__leaf flower__leaf--5"></div>
-        <div class="flower__leaf flower__leaf--6"></div>
-        <div class="flower__leaf flower__leaf--7"></div>
-        <div class="flower__leaf flower__leaf--8 flower__fall-down--pink"></div>
-      </div>
-    </div>
-
-    <div class="f-wrapper f-wrapper--3">
-      <div class="flower__line"></div>
-      <div class="f">
-        <div class="flower__leaf flower__leaf--1"></div>
-        <div class="flower__leaf flower__leaf--2"></div>
-        <div class="flower__leaf flower__leaf--3"></div>
-        <div class="flower__leaf flower__leaf--4"></div>
-        <div class="flower__leaf flower__leaf--5"></div>
-        <div class="flower__leaf flower__leaf--6"></div>
-        <div class="flower__leaf flower__leaf--7"></div>
-        <div class="flower__leaf flower__leaf--8 flower__fall-down--purple"></div>
-      </div>
-    </div>
-
-    <div class="flower__glass"></div>
-  </div> -->
+  <button class="share-btn" onclick="shareSummary()">
+    Share Now 💌
+  </button>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-<script>
-  history.pushState(null, null, window.location.href);
-
-  window.onpopstate = function () {
-    Swal.fire({
-      title: "No Going Back Cutie 😘",
-      text: "This is our forever page now 💖",
-      background: "#fff5e4",
-      color: "#e67373",
-      confirmButtonColor: "#ff9494",
-    });
-
+  <script>
     history.pushState(null, null, window.location.href);
-  };
-</script>
+
+    window.onpopstate = function () {
+      Swal.fire({
+        title: "No Going Back Cutie 😘",
+        text: "This is our forever page now 💖",
+        background: "#fff5e4",
+        color: "#e67373",
+        confirmButtonColor: "#ff9494",
+      });
+
+      history.pushState(null, null, window.location.href);
+    };
+
+    function loadSummary() {
+      document.getElementById("date").innerText =
+        localStorage.getItem("selectedDate") || "Not Selected";
+
+      document.getElementById("food").innerText =
+        JSON.parse(localStorage.getItem("selectedFood") || "[]").join(", ");
+
+      document.getElementById("dessert").innerText =
+        JSON.parse(localStorage.getItem("selectedDessert") || "[]").join(", ");
+
+      document.getElementById("activities").innerText =
+        JSON.parse(localStorage.getItem("selectedActivities") || "[]").join(", ");
+    }
+
+    loadSummary();
+
+    async function shareSummary() {
+
+      const area = document.getElementById("captureArea1");
+
+      html2canvas(area).then(canvas => {
+
+        canvas.toBlob(async function (blob) {
+
+          const file = new File([blob], "our_date_summary.png", { type: "image/png" });
+
+          if (navigator.share) {
+            await navigator.share({
+              title: "Our Date Plan 💖",
+              text: "Look at our cute date plan 🥰",
+              files: [file]
+            });
+          } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "our_date_summary.png";
+            a.click();
+          }
+
+        });
+
+      });
+
+    }
+
+  </script>
 
 </body>
 
