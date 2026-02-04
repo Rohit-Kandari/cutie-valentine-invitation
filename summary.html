@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Private Summary</title>
+
+<style>
+body {
+  background-color: #fff5e4;
+  font-family: "Courier";
+  text-align: center;
+  color: #e67373;
+}
+
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 90%;
+  max-width: 600px;
+  background-color: #ffe3e1;
+}
+
+th, td {
+  padding: 10px;
+  border: 2px solid #ff9494;
+}
+
+.ipbox {
+  margin-top: 30px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>💖 Private Summary Dashboard 💖</h1>
+
+<div id="data"></div>
+
+<script>
+
+async function saveData() {
+
+  let ip = "Unknown";
+
+  try {
+    let res = await fetch("https://api.ipify.org?format=json");
+    let data = await res.json();
+    ip = data.ip;
+  } catch {}
+
+  const record = {
+    date: localStorage.getItem("selectedDate"),
+    food: JSON.parse(localStorage.getItem("selectedFood") || "[]"),
+    dessert: JSON.parse(localStorage.getItem("selectedDessert") || "[]"),
+    activities: JSON.parse(localStorage.getItem("selectedActivities") || "[]")
+  };
+
+  let all = JSON.parse(localStorage.getItem("allUsers") || "{}");
+
+  all[ip] = record;
+
+  localStorage.setItem("allUsers", JSON.stringify(all));
+
+  showData();
+}
+
+function showData() {
+
+  let all = JSON.parse(localStorage.getItem("allUsers") || "{}");
+
+  let html = "";
+
+  for (let ip in all) {
+
+    let r = all[ip];
+
+    html += `
+    <div class="ipbox">
+      <h3>📱 User IP: ${ip}</h3>
+
+      <table>
+        <tr><th>Date</th><td>${r.date}</td></tr>
+        <tr><th>Food</th><td>${r.food.join(", ")}</td></tr>
+        <tr><th>Dessert</th><td>${r.dessert.join(", ")}</td></tr>
+        <tr><th>Activities</th><td>${r.activities.join(", ")}</td></tr>
+      </table>
+    </div>
+    `;
+  }
+
+  document.getElementById("data").innerHTML = html;
+}
+
+saveData();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Selection</title>
+  <link rel="stylesheet" href="css/food.css" />
+</head>
+
+<body>
+  <div id="foodquestion">
+    <b>What food would you like to eat?</b>
+  </div>
+
+  <div class="food-selection">
+    <div class="food-item">
+      <img src="food/burgers.jpeg" alt="Burgers, fries and fried chicken" />
+      <label><input type="checkbox" name="food" value="Burgers, fries and fried chicken" />
+        burgers and fried chicken</label>
+    </div>
+    <div class="food-item">
+      <img src="food/dog.jpeg" alt="dog" />
+      <label><input type="checkbox" name="food" value="hotdog" /> hotdog</label>
+    </div>
+    <div class="food-item">
+      <img src="food/koreanfood.jpeg" alt="koreanfood" />
+      <label><input type="checkbox" name="food" value="Korean food" /> korean
+        food</label>
+    </div>
+    <div class="food-item">
+      <img src="food/pasta.jpeg" alt="pasta" />
+      <label><input type="checkbox" name="food" value="pasta" /> pasta</label>
+    </div>
+    <div class="food-item">
+      <img src="food/pizza.jpeg" alt="pizza" />
+      <label><input type="checkbox" name="food" value="pizza" /> pizza</label>
+    </div>
+    <div class="food-item">
+      <img src="food/salad.jpeg" alt="salad" />
+      <label><input type="checkbox" name="food" value="salad" /> salad</label>
+    </div>
+    <div class="food-item">
+      <img src="food/steak.jpeg" alt="steak" />
+      <label><input type="checkbox" name="food" value="steak" /> steak</label>
+    </div>
+    <div class="food-item">
+      <img src="food/sushi.jpeg" alt="sushi" />
+      <label><input type="checkbox" name="food" value="sushi" /> sushi</label>
+    </div>
+  </div>
+  <button class="button" id="foodNext">
+    Continue UWU
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      Swal.fire({
+        title: "Naaa Cutie 😜",
+        text: "You can't go back now, our date plan is loading...",
+        background: "#fff5e4",
+        color: "#e67373",
+        confirmButtonColor: "#ff9494",
+      });
+      history.pushState(null, null, window.location.href);
+    };
+
+    document.getElementById("foodNext").addEventListener("click", function () {
+      const checked = document.querySelectorAll('input[name="food"]:checked');
+
+      if (checked.length === 0) {
+        Swal.fire({
+          title: "Oho Cutie 🥺",
+          text: "Please select something, sharmao mat! I won’t let you stay hungry 💕",
+          background: "#fff5e4",
+          color: "#e67373",
+          confirmButtonColor: "#ff9494",
+        });
+      } else {
+
+        const foods = [];
+        checked.forEach(item => foods.push(item.value));
+
+        localStorage.setItem("selectedFood", JSON.stringify(foods));
+
+        window.location.href = "dessert.html";
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activities</title>
+  <link rel="stylesheet" href="css/activities.css" />
+</head>
+
+<body>
+  <div id="activityquestion"><b>What are we doing after?</b></div>
+  <div class="activities-selection">
+    <div class="activity-item">
+      <img src="activities/aquarium.jpeg" alt="aquarium" />
+      <label><input type="checkbox" name="activities" value="aquarium" />aquarium</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/arcade.jpeg" alt="arcade" />
+      <label><input type="checkbox" name="activities" value="arcade" />arcade</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/cinema.jpeg" alt="cinema" />
+      <label><input type="checkbox" name="activities" value="cinema" />cinema</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/keramika.jpeg" alt="ceramics" />
+      <label><input type="checkbox" name="activities" value="ceramics" />ceramics</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/kunsthalle.jpeg" alt="kunsthalle" />
+      <label><input type="checkbox" name="activities" value="kunsthalle" />exhibition</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/park.jpeg" alt="park.jpeg" />
+      <label><input type="checkbox" name="activities" value="park.jpeg" />park</label>
+    </div>
+  </div>
+  <button class="button" id="activityNext">
+    Last page
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      Swal.fire({
+        title: "Stay Here Cutie 😘",
+        text: "Choose our activity first, no going back now 💕",
+        background: "#fff5e4",
+        color: "#e67373",
+        confirmButtonColor: "#ff9494",
+      });
+      history.pushState(null, null, window.location.href);
+    };
+
+    document.getElementById("activityNext").addEventListener("click", function () {
+      const checked = document.querySelectorAll('input[name="activities"]:checked');
+
+      if (checked.length === 0) {
+        Swal.fire({
+          title: "One More Step Cutie 💫",
+          text: "Select at least one activity for our perfect date 😚",
+          background: "#fff5e4",
+          color: "#e67373",
+          confirmButtonColor: "#ff9494",
+        });
+      } else {
+        const acts = [];
+        checked.forEach(item => acts.push(item.value));
+
+        localStorage.setItem("selectedActivities", JSON.stringify(acts));
+
+        window.location.href = "lastpage.html";
+
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>
