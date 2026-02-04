@@ -112,6 +112,24 @@
     <div class="flower__glass"></div>
   </div> -->
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  history.pushState(null, null, window.location.href);
+
+  window.onpopstate = function () {
+    Swal.fire({
+      title: "No Going Back Cutie 😘",
+      text: "This is our forever page now 💖",
+      background: "#fff5e4",
+      color: "#e67373",
+      confirmButtonColor: "#ff9494",
+    });
+
+    history.pushState(null, null, window.location.href);
+  };
+</script>
+
 </body>
 
 </html>
